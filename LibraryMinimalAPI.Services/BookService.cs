@@ -1,13 +1,6 @@
 ﻿using LibraryMinimalAPI.Core.Dtos;
 using LibraryMinimalAPI.Persistence;
 using Microsoft.Extensions.Logging;
-<<<<<<< HEAD
-using System;
-using System.Collections.Generic;
-using System.Text;
-=======
-
->>>>>>> d7feafde1c75a260c1e71ee5f0d0cbd6338de486
 
 namespace LibraryMinimalAPI.Services
 {
@@ -22,11 +15,7 @@ namespace LibraryMinimalAPI.Services
             _logger = logger;
         }
 
-<<<<<<< HEAD
         public IEnumerable<BookDTO> GetBooks()
-=======
-        public IEnumerable <BookDTO> GetBooks() 
->>>>>>> d7feafde1c75a260c1e71ee5f0d0cbd6338de486
         {
             IReadOnlyList<BookDTO> BookDetails = _context.BookDetails
                 .Select(b => new BookDTO(

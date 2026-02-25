@@ -12,11 +12,7 @@ namespace LibraryMinimalAPI.Web.Endpoints
 
 
             endpoints.MapGet("books", GetBooks);
-<<<<<<< HEAD
             endpoints.MapGet("books/{id:int}", GetBookByID);
-=======
-            endpoints.MapGet("books/{id}", GetBookByID);
->>>>>>> d7feafde1c75a260c1e71ee5f0d0cbd6338de486
 
             return endpoints;
 
@@ -33,8 +29,4 @@ namespace LibraryMinimalAPI.Web.Endpoints
             return book is null ? TypedResults.NotFound() : TypedResults.Ok(book);
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> d7feafde1c75a260c1e71ee5f0d0cbd6338de486
