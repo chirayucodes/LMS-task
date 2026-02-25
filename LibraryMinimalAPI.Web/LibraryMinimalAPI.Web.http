@@ -1,0 +1,10 @@
+<<<<<<< HEAD
+@LibraryMinimalAPI.Web_HostAddress = http://localhost:5042
+=======
+@LibraryMinimalAPI.Web_HostAddress = http://localhost:5241
+>>>>>>> d7feafde1c75a260c1e71ee5f0d0cbd6338de486
+
+GET {{LibraryMinimalAPI.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

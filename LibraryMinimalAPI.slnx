@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="LibraryMinimalAPI.Core/LibraryMinimalAPI.Core.csproj" />
+  <Project Path="LibraryMinimalAPI.Persistence/LibraryMinimalAPI.Persistence.csproj" />
+  <Project Path="LibraryMinimalAPI.Services/LibraryMinimalAPI.Services.csproj" />
+  <Project Path="LibraryMinimalAPI.Web/LibraryMinimalAPI.Web.csproj" />
+</Solution>
