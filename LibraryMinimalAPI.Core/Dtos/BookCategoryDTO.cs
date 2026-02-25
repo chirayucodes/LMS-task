@@ -3,7 +3,8 @@
     public sealed class BookCategoryDTO
         (
             int ID,
-            string BookCategory
+            string BookCategory,
+            IReadOnlyList<BookDTO> BookDetails
         )
     {
         public int ID { get; } = ID;
