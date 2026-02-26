@@ -9,17 +9,16 @@ namespace LibraryMinimalAPI.Web.Endpoints
         public static IEndpointRouteBuilder MapBookEndpoints(this IEndpointRouteBuilder endpoints)
         {
             ArgumentNullException.ThrowIfNull(endpoints);
-
-
+            IEndpointRouteBuilder bookGroup = endpoints.MapGroup("Books");
             endpoints.MapGet("books", GetBooks);
             endpoints.MapGet("books/{id:int}", GetBookByID);
 
             return endpoints;
 
         }
-        private static Ok<IEnumerable<BookDTO>> GetBooks(BookService bookService)
+        private static Ok<IEnumerable<BookDTO>> GetBooks(BookService bookService, string? keyword)
         {
-            IEnumerable<BookDTO> books = bookService.GetBooks();
+            IEnumerable<BookDTO> books = bookService.GetBooks(keyword);
             return TypedResults.Ok(books);
         }
 

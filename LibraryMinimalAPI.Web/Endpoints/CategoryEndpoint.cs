@@ -17,7 +17,7 @@ namespace LibraryMinimalAPI.Web.Endpoints
             ArgumentNullException.ThrowIfNull(endpoints);
             IEndpointRouteBuilder categoryGroup = endpoints.MapCategoryGroup();
             categoryGroup.MapGet("", GetCategories);
-            //   categoryGroup.MapGet("{id}", GetCategoryBook);
+            categoryGroup.MapGet("{id}", GetCategoryBook);
 
             return endpoints;
         }
@@ -26,6 +26,12 @@ namespace LibraryMinimalAPI.Web.Endpoints
         {
             IEnumerable<CategoryDTO> categories = categoryService.GetCategories();
             return TypedResults.Ok(categories);
+        }
+
+        private static IResult GetCategoryBook(CategoryService categoryService, int id)
+        {
+            CategoryDTO? category = categoryService.GetCategoryByID(id);
+            return category is null ? TypedResults.NotFound() : TypedResults.Ok(category);
         }
     }
 }

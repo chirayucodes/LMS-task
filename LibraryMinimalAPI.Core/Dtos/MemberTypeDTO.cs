@@ -1,10 +1,9 @@
-﻿using LibraryMinimalAPI.Core.Dtos;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace LibraryMinimalAPI.Core
+namespace LibraryMinimalAPI.Core.Dtos
 {
     public sealed class MemberTypeDTO
         (

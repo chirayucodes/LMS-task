@@ -15,7 +15,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services
     .AddScoped<BookService>()
-    .AddScoped<CategoryService>();
+    .AddScoped<CategoryService>()
+    .AddScoped<MemberService>();
 
 
 
@@ -32,7 +33,8 @@ app.UseHttpsRedirection();
 RouteGroupBuilder bookGroup = app.MapGroup("api");
 
 bookGroup.MapBookEndpoints()
-    .MapCategoryEndpoints();
+    .MapCategoryEndpoints()
+    .MapMemberEndpoints();
 
 app.MapGet("/", () => "Welcome to the Library API!");
 

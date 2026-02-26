@@ -1,6 +1,8 @@
 ﻿using LibraryMinimalAPI.Core.Dtos;
 using LibraryMinimalAPI.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 
 namespace LibraryMinimalAPI.Services
@@ -23,8 +25,19 @@ namespace LibraryMinimalAPI.Services
                 (
                  c.Id,
                  c.BookCategory))
-                .ToArray();
+                .ToList();
             return new ReadOnlyCollection<CategoryDTO>(categories);
         }
-    }
+        public CategoryDTO? GetCategoryByID(int id)
+        {
+            CategoryDTO? category = _dbContext.Categories
+                .Where(c => c.Id == id)
+                .Select(c => new CategoryDTO
+                (
+                 c.Id,
+                 c.BookCategory))
+                .FirstOrDefault();
+            return category;
+        }
+    }   
 }

@@ -5,7 +5,6 @@
         public int Id { get; set; }
         public required string BookCategory { get; set; }
 
-
-        public IList<BookDetails> BookDetails { get; set; }
+        public IList<BookDetails> BookDetails { get; set; } = [];
     }
 }

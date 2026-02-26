@@ -20,11 +20,11 @@ namespace LibraryMinimalAPI.Persistence.Configurations
 
             builder.HasMany(m => m.BookIssueDetails)
                 .WithOne(m => m.Members)
-                .HasForeignKey(m => m.MemberTypeID);
+                .HasForeignKey(m => m.MemberID);
                 
-            builder.HasOne(m => m.MemberType)
-                .WithMany(m => m.Members)
-                .HasForeignKey(m => m.MemberTypeID);
+            //builder.HasMany(m => m.BookIssueDetails)
+            //    .WithOne(m => m.BookDetails)
+            //    .HasForeignKey(m => m.BookID);
         }
     }
 }

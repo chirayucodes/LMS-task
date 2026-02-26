@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace LibraryMinimalAPI.Persistence
 {
@@ -10,6 +11,8 @@ namespace LibraryMinimalAPI.Persistence
 
         public DbSet<BookDetails> BookDetails { get; init; }
         public DbSet<Categories> Categories { get; init; }
+        public DbSet<Members> Members { get; init; } 
+        public DbSet<MemberType> MemberType { get; init; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

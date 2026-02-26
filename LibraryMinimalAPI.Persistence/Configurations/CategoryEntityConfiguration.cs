@@ -10,10 +10,10 @@ namespace LibraryMinimalAPI.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Categories> builder)
         {
-            builder.ToTable("Category");
+            builder.ToTable("Categories");
             builder.HasKey(c=> c.Id);
                 builder
-                    .Property(c => c.BookDetails)
+                    .Property(c => c.BookCategory)
                     .IsRequired()
                     .HasMaxLength(100);
             builder

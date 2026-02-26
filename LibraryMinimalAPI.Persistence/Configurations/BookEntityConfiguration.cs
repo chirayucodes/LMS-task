@@ -38,6 +38,9 @@ namespace LibraryMinimalAPI.Persistence.Configurations
                     .HasForeignKey(b => b.CategoryId)
                     .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasMany(b => b.BookIssueDetails)
+                    .WithOne(b => b.BookDetails)
+                    .HasForeignKey(b => b.BookID);
         }
     }
 }
