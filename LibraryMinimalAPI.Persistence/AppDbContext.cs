@@ -13,6 +13,7 @@ namespace LibraryMinimalAPI.Persistence
         public DbSet<Categories> Categories { get; init; }
         public DbSet<Members> Members { get; init; } 
         public DbSet<MemberType> MemberType { get; init; }
+        public DbSet<BookIssueDetails> BookIssueDetails { get; init; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
