@@ -7,7 +7,7 @@
         string AuthorName,
         string PublisherName,
         decimal BookPrice,
-        int CategoryId
+        string BookCategory
         )
     {
         public int Id { get; } = id;
@@ -15,6 +15,6 @@
         public string AuthorName { get; } = AuthorName;
         public string PublisherName { get; } = PublisherName;
         public decimal BookPrice { get; } = BookPrice;
-        public int CategoryId { get; } = CategoryId;
+        public string BookCategory { get; } = BookCategory;
     }
 }

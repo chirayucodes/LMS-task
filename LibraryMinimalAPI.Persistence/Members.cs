@@ -9,10 +9,10 @@ namespace LibraryMinimalAPI.Persistence
     {
         public int ID { get; set; }
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
         public int MemberTypeID { get; set; }
 
-        public required MemberType MemberType { get; set; }
+        public MemberType? MemberType { get; set; }
 
         public IList<BookIssueDetails> BookIssueDetails { get; set; } = [];
 

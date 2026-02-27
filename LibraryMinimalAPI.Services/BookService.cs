@@ -1,8 +1,10 @@
 ﻿using LibraryMinimalAPI.Core.Dtos;
+using LibraryMinimalAPI.Core.Requests;
 using LibraryMinimalAPI.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace LibraryMinimalAPI.Services
 {
@@ -17,7 +19,7 @@ namespace LibraryMinimalAPI.Services
             _logger = logger;
         }
 
-        public IEnumerable<BookDTO> GetBooks(string? keyword= null)
+        public IEnumerable<BookDTO> GetBooks(string? keyword = null)
         {
             var query = _context.BookDetails.AsQueryable();
             if (!string.IsNullOrEmpty(keyword))
@@ -31,9 +33,9 @@ namespace LibraryMinimalAPI.Services
                     b.Id,
                     b.BookTitle,
                     b.AuthorName,
-                    b.PublisherName, 
+                    b.PublisherName,
                     b.BookPrice,
-                    b.CategoryId 
+                    b.Categories.BookCategory
                 )).ToArray();
             return new ReadOnlyCollection<BookDTO>(books);
         }
@@ -49,10 +51,55 @@ namespace LibraryMinimalAPI.Services
                 book.AuthorName,
                 book.PublisherName,
                 book.BookPrice,
-                book.CategoryId
+                 _context.Categories
+                    .Where(c => c.Id == book.CategoryId)
+                    .Select(c => c.BookCategory)
+                    .FirstOrDefault() ?? string.Empty
                 );
         }
 
+        public BookDTO? PostBookRequest(PostBookRequest request)
+        {
+            try
+            {
+                var book = new BookDetails
+                {
+                    BookTitle = request.BookTitle,
+                    AuthorName = request.AuthorName,
+                    PublisherName = request.PublisherName,
+                    BookPrice = request.BookPrice,
+                    CategoryId = request.CategoryID
+                };
 
+                _context.BookDetails.Add(book);
+                _context.SaveChanges();
+
+                var bookDto = new BookDTO(
+                    book.Id,
+                    book.BookTitle,
+                    book.AuthorName,
+                    book.PublisherName,
+                    book.BookPrice,
+                     _context.Categories
+                    .Where(c => c.Id == book.CategoryId)
+                    .Select(c => c.BookCategory)
+                    .FirstOrDefault() ?? string.Empty
+
+                );
+                return bookDto;
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex,
+                    "Error while creating a Book.");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error while creating a Book with name {@BookName}.", request);
+            }
+
+            return null;
+
+        }
     }
 }

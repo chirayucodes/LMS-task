@@ -10,7 +10,7 @@ namespace LibraryMinimalAPI.Persistence
         public required string PublisherName { get; set; }
         public required decimal BookPrice { get; set; }
         public required int CategoryId { get; set; }
-        public required Categories Categories { get; set; }        
+        public Categories Categories { get; set; }        
         public IList<BookIssueDetails> BookIssueDetails { get; set; } = [];
     }
 

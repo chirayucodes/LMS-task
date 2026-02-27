@@ -34,7 +34,6 @@ namespace LibraryMinimalAPI.Persistence.Configurations
 
             builder.HasOne(b => b.Categories)
                     .WithMany(c => c.BookDetails)
-                    .IsRequired()
                     .HasForeignKey(b => b.CategoryId)
                     .OnDelete(DeleteBehavior.Restrict);
 

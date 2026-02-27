@@ -1,4 +1,5 @@
 ﻿using LibraryMinimalAPI.Core.Dtos;
+using LibraryMinimalAPI.Core.Requests;
 using LibraryMinimalAPI.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -9,9 +10,10 @@ namespace LibraryMinimalAPI.Web.Endpoints
         public static IEndpointRouteBuilder MapBookEndpoints(this IEndpointRouteBuilder endpoints)
         {
             ArgumentNullException.ThrowIfNull(endpoints);
-            IEndpointRouteBuilder bookGroup = endpoints.MapGroup("Books");
+            
             endpoints.MapGet("books", GetBooks);
             endpoints.MapGet("books/{id:int}", GetBookByID);
+            endpoints.MapPost("books", PostBookRequest);
 
             return endpoints;
 
@@ -26,6 +28,17 @@ namespace LibraryMinimalAPI.Web.Endpoints
         {
             BookDTO? book = bookService.GetBookByID(id);
             return book is null ? TypedResults.NotFound() : TypedResults.Ok(book);
+        }
+
+        private static IResult PostBookRequest(BookService bookServices, PostBookRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.BookTitle))
+                return TypedResults.BadRequest("BookName is required.");
+
+            var result = bookServices.PostBookRequest(request);
+            return result is null
+                ? TypedResults.Problem("There was some problem. See log for more details.")
+                : TypedResults.Ok(result);
         }
     }
 }

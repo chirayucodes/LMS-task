@@ -16,7 +16,7 @@ namespace LibraryMinimalAPI.Web.Endpoints
             IEndpointRouteBuilder MemberGroup = endpoints.MapMemberGroup();
             MemberGroup.MapGet("", GetMembers);
             MemberGroup.MapGet("{id:int}", GetMemberTypes);
-            return MemberGroup;
+            return endpoints;
 
         }
         private static IResult GetMembers(MemberService memberService)

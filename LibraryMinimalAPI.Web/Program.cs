@@ -36,8 +36,9 @@ RouteGroupBuilder bookGroup = app.MapGroup("api");
 bookGroup.MapBookEndpoints()
     .MapCategoryEndpoints()
     .MapMemberEndpoints()
-    .MapBookIssuedEndpoints();
+    .MapBookIssuedEndpoints(); 
 
 app.MapGet("/", () => "Welcome to the Library API!");
 
+app.UseRouting();
 app.Run();

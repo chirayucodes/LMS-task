@@ -20,8 +20,7 @@ namespace LibraryMinimalAPI.Persistence.Configurations
 
             builder.Property(b => b.RenewDate)
                 .IsRequired();
-
-            builder.Property(b => b.Name);
+          
 
             builder.Property(b => b.ReturnDate)
                 .IsRequired();
