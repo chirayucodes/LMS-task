@@ -19,7 +19,7 @@ namespace LibraryMinimalAPI.Web.Endpoints
            
             BookIssuedGroup.MapGet ("", GetBookIssued);
             BookIssuedGroup.MapGet("Search", GetBookIssuedByMemberName);
-            //BookIssuedGroup.MapGet("member/{MemberID:int}/BookIssued", GetBookIssuedByMemberID)
+            BookIssuedGroup.MapGet("member/{MemberID:int}/BookIssued", GetBookIssuedByMemberID);
 
             return endpoints;
         }
@@ -36,6 +36,14 @@ namespace LibraryMinimalAPI.Web.Endpoints
 
             return BookIssued is null ? TypedResults.NotFound("MemberName Not Found") : TypedResults.Ok(BookIssued);
         }
+
+        private static IResult GetBookIssuedByMemberID(BookIssuedService bookIssuedServices, int MemberID)
+        {
+            var bookIssued = bookIssuedServices.GetBookIssuedByMemberID(MemberID);
+
+            return bookIssued is null ? TypedResults.NotFound("MemberID Not Found") : TypedResults.Ok(bookIssued);
+        }
+
 
     }
 

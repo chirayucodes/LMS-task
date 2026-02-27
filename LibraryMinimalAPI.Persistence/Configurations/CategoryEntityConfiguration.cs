@@ -11,7 +11,7 @@ namespace LibraryMinimalAPI.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Categories> builder)
         {
             builder.ToTable("Categories");
-            builder.HasKey(c=> c.Id);
+            builder.HasKey(c=> c.ID);
                 builder
                     .Property(c => c.BookCategory)
                     .IsRequired()
@@ -19,7 +19,7 @@ namespace LibraryMinimalAPI.Persistence.Configurations
             builder
                 .HasMany(c => c.BookDetails)
                 .WithOne(b => b.Categories)
-                .HasForeignKey(c => c.Id);
+                .HasForeignKey(c => c.ID);
 
         }
     }

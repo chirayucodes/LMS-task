@@ -30,7 +30,7 @@ namespace LibraryMinimalAPI.Services
             IList<BookDTO> books = query
                 .Include(b => b.Categories)
                 .Select(b => new BookDTO(
-                    b.Id,
+                    b.ID,
                     b.BookTitle,
                     b.AuthorName,
                     b.PublisherName,
@@ -42,17 +42,17 @@ namespace LibraryMinimalAPI.Services
 
         public BookDTO? GetBookByID(int id)
         {
-            var book = _context.BookDetails.FirstOrDefault(b => b.Id == id);
+            var book = _context.BookDetails.FirstOrDefault(b => b.ID == id);
             if (book is null) return null;
 
             return new BookDTO(
-                book.Id,
+                book.ID,
                 book.BookTitle,
                 book.AuthorName,
                 book.PublisherName,
                 book.BookPrice,
                  _context.Categories
-                    .Where(c => c.Id == book.CategoryId)
+                    .Where(c => c.ID == book.CategoryID)
                     .Select(c => c.BookCategory)
                     .FirstOrDefault() ?? string.Empty
                 );
@@ -68,20 +68,21 @@ namespace LibraryMinimalAPI.Services
                     AuthorName = request.AuthorName,
                     PublisherName = request.PublisherName,
                     BookPrice = request.BookPrice,
-                    CategoryId = request.CategoryID
+                    CategoryID = request.CategoryID
                 };
 
                 _context.BookDetails.Add(book);
+
                 _context.SaveChanges();
 
                 var bookDto = new BookDTO(
-                    book.Id,
+                    book.ID,
                     book.BookTitle,
                     book.AuthorName,
                     book.PublisherName,
                     book.BookPrice,
                      _context.Categories
-                    .Where(c => c.Id == book.CategoryId)
+                    .Where(c => c.ID == book.CategoryID)
                     .Select(c => c.BookCategory)
                     .FirstOrDefault() ?? string.Empty
 
@@ -95,7 +96,7 @@ namespace LibraryMinimalAPI.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Error while creating a Book with name {@BookName}.", request);
+                _logger.LogError(e, "Error while creating a Book with name {@BookTitle}.", request);
             }
 
             return null;

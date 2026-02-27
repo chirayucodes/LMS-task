@@ -11,6 +11,7 @@ namespace LibraryMinimalAPI.Persistence.Configurations
         public void Configure(EntityTypeBuilder<BookIssueDetails> builder)
         {
             builder.HasKey(b => b.ID);
+
             builder.Property(b => b.BookPrice)
                 .HasColumnType("decimal(6,2)")
                 .IsRequired();

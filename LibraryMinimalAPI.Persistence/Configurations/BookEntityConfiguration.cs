@@ -8,7 +8,7 @@ namespace LibraryMinimalAPI.Persistence.Configurations
         {
             builder.ToTable("BookDetails");
 
-            builder.HasKey(b => b.Id);
+            builder.HasKey(b => b.ID);
 
             builder
                 .Property(b => b.BookTitle)
@@ -34,7 +34,7 @@ namespace LibraryMinimalAPI.Persistence.Configurations
 
             builder.HasOne(b => b.Categories)
                     .WithMany(c => c.BookDetails)
-                    .HasForeignKey(b => b.CategoryId)
+                    .HasForeignKey(b => b.CategoryID)
                     .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(b => b.BookIssueDetails)

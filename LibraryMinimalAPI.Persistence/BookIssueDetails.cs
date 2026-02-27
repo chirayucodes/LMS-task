@@ -19,8 +19,8 @@ namespace LibraryMinimalAPI.Persistence
         public required decimal BookPrice { get; set; }
 
 
-        public BookDetails? BookDetails { get; set; }
-        public Members? Members { get; set; }
+        public BookDetails BookDetails { get; set; }
+        public Members Members { get; set; }
 
     }
 }

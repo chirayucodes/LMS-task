@@ -23,7 +23,7 @@ namespace LibraryMinimalAPI.Services
             IList<CategoryDTO> categories = _dbContext.Categories
                 .Select(c => new CategoryDTO
                 (
-                 c.Id,
+                 c.ID,
                  c.BookCategory))
                 .ToList();
             return new ReadOnlyCollection<CategoryDTO>(categories);
@@ -31,10 +31,10 @@ namespace LibraryMinimalAPI.Services
         public CategoryDTO? GetCategoryByID(int id)
         {
             CategoryDTO? category = _dbContext.Categories
-                .Where(c => c.Id == id)
+                .Where(c => c.ID == id)
                 .Select(c => new CategoryDTO
                 (
-                 c.Id,
+                 c.ID,
                  c.BookCategory))
                 .FirstOrDefault();
             return category;

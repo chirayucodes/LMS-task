@@ -68,6 +68,24 @@ namespace LibraryMinimalAPI.Services
             return new ReadOnlyCollection<BookIssuedDTO>(result);
 
         }
+        public BookIssuedDTO? GetBookIssuedByMemberID(int MemberID)
+        {
+            var issuedBook = _DbContext.BookIssueDetails
+                .Where(b => b.MemberID == MemberID)
+                .Select(b => new BookIssuedDTO(
+                        b.ID,
+                        b.BookDetails.BookTitle,
+                        b.Members.Name,
+                        b.IssueDate,
+                        b.RenewDate,
+                        b.ReturnDate,
+                        b.BookPrice
+                ))
+                .FirstOrDefault();
+
+            return issuedBook;
+
+        }
 
     }             
 }

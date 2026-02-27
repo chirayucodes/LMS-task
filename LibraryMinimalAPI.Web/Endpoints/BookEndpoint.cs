@@ -41,4 +41,4 @@ namespace LibraryMinimalAPI.Web.Endpoints
                 : TypedResults.Ok(result);
         }
     }
-}
+} 
