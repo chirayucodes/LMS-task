@@ -10,23 +10,32 @@ namespace LibraryMinimalAPI.Web.Endpoints
         public static IEndpointRouteBuilder MapBookEndpoints(this IEndpointRouteBuilder endpoints)
         {
             ArgumentNullException.ThrowIfNull(endpoints);
-            
-            endpoints.MapGet("books", GetBooks);
-            endpoints.MapGet("books/{id:int}", GetBookByID);
-            endpoints.MapPost("books", PostBookRequest);
+
+            endpoints.MapGet("/books", GetBooks);                 // GET all
+            endpoints.MapGet("/books/search", GetBookBySearch);  // search
+            endpoints.MapGet("/books/{ID:int}", GetBookByID);
+            endpoints.MapPost("/books", PostBookRequest);
 
             return endpoints;
 
         }
-        private static Ok<IEnumerable<BookDTO>> GetBooks(BookService bookService, string? keyword)
+
+        private static Ok<IEnumerable<BookDTO>> GetBooks(BookService bookService)
         {
-            IEnumerable<BookDTO> books = bookService.GetBooks(keyword);
+            var books = bookService.GetBooksList();
+
             return TypedResults.Ok(books);
         }
 
-        private static IResult GetBookByID(BookService bookService, int id)
+        private static Ok<IEnumerable<BookDTO>> GetBookBySearch(BookService bookService, string? keyword)
         {
-            BookDTO? book = bookService.GetBookByID(id);
+            IEnumerable<BookDTO> books = bookService.GetBookBySearch(keyword);
+            return TypedResults.Ok(books);
+        }
+
+        private static IResult GetBookByID(BookService bookService, int ID)
+        {
+            BookDTO? book = bookService.GetBookByID(ID);
             return book is null ? TypedResults.NotFound() : TypedResults.Ok(book);
         }
 

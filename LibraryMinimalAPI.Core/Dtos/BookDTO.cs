@@ -2,7 +2,7 @@
 {
     public sealed class BookDTO
         (
-        int id,
+        int ID,
         string BookTitle,
         string AuthorName,
         string PublisherName,
@@ -10,7 +10,7 @@
         string BookCategory
         )
     {
-        public int Id { get; } = id;
+        public int ID { get; } = ID;
         public string BookTitle { get; } = BookTitle;
         public string AuthorName { get; } = AuthorName;
         public string PublisherName { get; } = PublisherName;

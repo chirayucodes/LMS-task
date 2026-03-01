@@ -16,10 +16,10 @@ namespace LibraryMinimalAPI.Persistence.Configurations
                     .Property(c => c.BookCategory)
                     .IsRequired()
                     .HasMaxLength(100);
-            builder
-                .HasMany(c => c.BookDetails)
-                .WithOne(b => b.Categories)
-                .HasForeignKey(c => c.ID);
+            //builder
+            //    .HasMany(c => c.BookDetails)
+            //    .WithOne(b => b.Categories)
+            //    .HasForeignKey(c => c.ID);
 
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 namespace LibraryMinimalAPI.Persistence.Configurations
 {
     public sealed class BookEntityConfiguration : IEntityTypeConfiguration<BookDetails>
@@ -35,11 +36,13 @@ namespace LibraryMinimalAPI.Persistence.Configurations
             builder.HasOne(b => b.Categories)
                     .WithMany(c => c.BookDetails)
                     .HasForeignKey(b => b.CategoryID)
+                    .HasPrincipalKey(c => c.ID)
                     .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(b => b.BookIssueDetails)
                     .WithOne(b => b.BookDetails)
                     .HasForeignKey(b => b.BookID);
+         
         }
     }
 }

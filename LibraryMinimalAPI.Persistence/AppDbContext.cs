@@ -21,7 +21,6 @@ namespace LibraryMinimalAPI.Persistence
             Type t = typeof(AppDbContext);
             modelBuilder.ApplyConfigurationsFromAssembly(t.Assembly);
 
-            base.OnModelCreating(modelBuilder);
         }
 
     }

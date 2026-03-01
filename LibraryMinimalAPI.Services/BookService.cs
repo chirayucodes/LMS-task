@@ -19,8 +19,28 @@ namespace LibraryMinimalAPI.Services
             _logger = logger;
         }
 
-        public IEnumerable<BookDTO> GetBooks(string? keyword = null)
+
+        public IEnumerable<BookDTO> GetBooksList()
         {
+            _logger.LogInformation("GetBooksList HIT");
+
+            IReadOnlyList<BookDTO> books = _context.BookDetails
+                //.Include(b => b.Categories)
+                .Select(b => new BookDTO(
+                    b.ID,
+                    b.BookTitle,
+                    b.AuthorName,
+                    b.PublisherName,
+                    b.BookPrice,
+                    b.Categories.BookCategory
+                ))
+                .ToList();
+
+            return books;
+        }
+        public IEnumerable<BookDTO> GetBookBySearch(string? keyword = null)
+        {
+            _logger.LogInformation("GetBookBySearch HIT");
             var query = _context.BookDetails.AsQueryable();
             if (!string.IsNullOrEmpty(keyword))
             {
