@@ -18,13 +18,21 @@ namespace LibraryMinimalAPI.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.HasMany(m => m.BookIssueDetails)
-                .WithOne(m => m.Members)
-                .HasForeignKey(m => m.MemberID);
-                
             //builder.HasMany(m => m.BookIssueDetails)
-            //    .WithOne(m => m.BookDetails)
-            //    .HasForeignKey(m => m.BookID);
+            //    .WithOne(m => m.Members)
+            //    .HasForeignKey(m => m.MemberID);
+
+
+            //  Members BookIssueDetails relationship
+            builder.HasMany(m => m.BookIssueDetails)
+                   .WithOne(b => b.Members)
+                   .HasForeignKey(b => b.MemberID);
+
+            
+            builder.HasOne(m => m.MemberType)
+                   .WithMany(mt => mt.Members)
+                   .HasForeignKey(m => m.MemberTypeID)
+                   .HasPrincipalKey(mt => mt.ID);
         }
     }
 }

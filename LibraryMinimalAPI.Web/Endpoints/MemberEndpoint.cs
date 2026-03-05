@@ -19,7 +19,6 @@ namespace LibraryMinimalAPI.Web.Endpoints
 
             MemberGroup.MapGet("", GetMembers);
             MemberGroup.MapGet("{id:int}", GetMemberTypes);
-
             MemberGroup.MapPost("", CreateMember);
 
             return endpoints;

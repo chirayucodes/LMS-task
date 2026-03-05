@@ -1,4 +1,5 @@
 ﻿using LibraryMinimalAPI.Core.Dtos;
+using LibraryMinimalAPI.Core.Requests;
 using LibraryMinimalAPI.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -20,6 +21,7 @@ namespace LibraryMinimalAPI.Web.Endpoints
             BookIssuedGroup.MapGet ("", GetBookIssued);
             BookIssuedGroup.MapGet("Search", GetBookIssuedByMemberName);
             BookIssuedGroup.MapGet("member/{MemberID:int}/BookIssued", GetBookIssuedByMemberID);
+            BookIssuedGroup.MapPost("", CreateBookIssued);
 
             return endpoints;
         }
@@ -44,6 +46,14 @@ namespace LibraryMinimalAPI.Web.Endpoints
             return bookIssued is null ? TypedResults.NotFound("MemberID Not Found") : TypedResults.Ok(bookIssued);
         }
 
+        private static IResult CreateBookIssued(BookIssuedService bookIssuedServices, PostBookIssuedRequest request)
+        {
+            var bookIssued = bookIssuedServices.CreateBookIssueRequest(request);
+
+            return bookIssued is null
+                ? TypedResults.BadRequest("Unable to Create Book Issue Request")
+                : TypedResults.Ok(bookIssued);  
+        }
 
     }
 
