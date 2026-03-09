@@ -13,7 +13,7 @@ namespace LibraryMinimalAPI.Persistence
         public required int MemberID { get; set; }
 
         public required DateOnly IssueDate { get; set; }
-        public required DateOnly? ReturnDate { get; set; }
+        public DateOnly? ReturnDate { get; set; }
 
         public DateOnly RenewDate { get; set; }
         public required decimal BookPrice { get; set; }

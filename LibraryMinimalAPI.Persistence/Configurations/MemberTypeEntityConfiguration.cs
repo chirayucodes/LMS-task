@@ -11,7 +11,7 @@ namespace LibraryMinimalAPI.Persistence.Configurations
             builder.HasKey(x=> x.ID);
             builder.HasMany(m => m.Members)
                     .WithOne(m => m.MemberType)
-                    .HasForeignKey(m => m.ID);
+                    .HasForeignKey(m => m.MemberTypeID);
         }
     }
 }

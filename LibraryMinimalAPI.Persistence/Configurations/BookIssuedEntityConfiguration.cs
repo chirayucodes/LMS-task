@@ -21,10 +21,7 @@ namespace LibraryMinimalAPI.Persistence.Configurations
 
             builder.Property(b => b.RenewDate)
                 .IsRequired();
-          
-
-            builder.Property(b => b.ReturnDate)
-                .IsRequired();
+         
 
             builder.HasOne(b => b.BookDetails)
                 .WithMany(b => b.BookIssueDetails)
