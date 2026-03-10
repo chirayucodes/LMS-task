@@ -3,58 +3,55 @@ using LibraryMinimalAPI.Core.Requests;
 using LibraryMinimalAPI.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace LibraryMinimalAPI.Web.Endpoints
+namespace LibraryMinimalAPI.Web.Endpoints;
+
+public static class BookIssuedEndpoint
 {
-    public static class BookIssuedEndpoint
+    public static IEndpointRouteBuilder MapBookIssuedGroup(this IEndpointRouteBuilder endpoints)
     {
-        public static IEndpointRouteBuilder MapBookIssuedGroup(this IEndpointRouteBuilder endpoints)
-        {
-            return endpoints.MapGroup("issued");
-        }
-
-        public static IEndpointRouteBuilder MapBookIssuedEndpoints(this IEndpointRouteBuilder endpoints)
-        {
-            ArgumentNullException.ThrowIfNull(endpoints);
-
-            IEndpointRouteBuilder BookIssuedGroup = endpoints.MapBookIssuedGroup();
-           
-            BookIssuedGroup.MapGet ("", GetBookIssued);
-            BookIssuedGroup.MapGet("Search", GetBookIssuedByMemberName);
-            BookIssuedGroup.MapGet("member/{MemberID:int}/BookIssued", GetBookIssuedByMemberID);
-            BookIssuedGroup.MapPost("", CreateBookIssued);
-
-            return endpoints;
-        }
-
-        private static Ok<IEnumerable<BookIssuedDTO>> GetBookIssued(BookIssuedService bookIssuedService)
-        { 
-            var BookIssued = bookIssuedService.GetBookIssued();
-            return TypedResults.Ok(BookIssued);
-
-        }
-        private static IResult GetBookIssuedByMemberName(BookIssuedService bookIssuedServices, string members)
-        {
-            var BookIssued = bookIssuedServices.GetBookIssuedByMemberName(members);
-
-            return BookIssued is null ? TypedResults.NotFound("MemberName Not Found") : TypedResults.Ok(BookIssued);
-        }
-
-        private static IResult GetBookIssuedByMemberID(BookIssuedService bookIssuedServices, int MemberID)
-        {
-            var bookIssued = bookIssuedServices.GetBookIssuedByMemberID(MemberID);
-
-            return bookIssued is null ? TypedResults.NotFound("MemberID Not Found") : TypedResults.Ok(bookIssued);
-        }
-
-        private static IResult CreateBookIssued(BookIssuedService bookIssuedServices, PostBookIssuedRequest request)
-        {
-            var bookIssued = bookIssuedServices.CreateBookIssueRequest(request);
-
-            return bookIssued is null
-                ? TypedResults.BadRequest("Unable to Create Book Issue Request")
-                : TypedResults.Ok(bookIssued);  
-        }
-
+        return endpoints.MapGroup("issued");
     }
 
+    public static IEndpointRouteBuilder MapBookIssuedEndpoints(this IEndpointRouteBuilder endpoints)
+    {
+        ArgumentNullException.ThrowIfNull(endpoints);
+
+        IEndpointRouteBuilder BookIssuedGroup = endpoints.MapBookIssuedGroup();
+
+        BookIssuedGroup.MapGet("", GetBookIssued);
+        BookIssuedGroup.MapGet("Search", GetBookIssuedByMemberName);
+        BookIssuedGroup.MapGet("member/{MemberID:int}/BookIssued", GetBookIssuedByMemberID);
+        BookIssuedGroup.MapPost("", CreateBookIssued);
+
+        return endpoints;
+    }
+
+    private static Ok<IEnumerable<BookIssuedDTO>> GetBookIssued(BookIssuedService bookIssuedService)
+    {
+        IEnumerable<BookIssuedDTO> BookIssued = bookIssuedService.GetBookIssued();
+        return TypedResults.Ok(BookIssued);
+    }
+
+    private static IResult GetBookIssuedByMemberName(BookIssuedService bookIssuedServices, string members)
+    {
+        IEnumerable<BookIssuedDTO>? BookIssued = bookIssuedServices.GetBookIssuedByMemberName(members);
+
+        return BookIssued is null ? TypedResults.NotFound("MemberName Not Found") : TypedResults.Ok(BookIssued);
+    }
+
+    private static IResult GetBookIssuedByMemberID(BookIssuedService bookIssuedServices, int MemberID)
+    {
+        BookIssuedDTO? bookIssued = bookIssuedServices.GetBookIssuedByMemberID(MemberID);
+
+        return bookIssued is null ? TypedResults.NotFound("MemberID Not Found") : TypedResults.Ok(bookIssued);
+    }
+
+    private static IResult CreateBookIssued(BookIssuedService bookIssuedServices, PostBookIssuedRequest request)
+    {
+        BookIssuedDTO? bookIssued = bookIssuedServices.CreateBookIssueRequest(request);
+
+        return bookIssued is null
+            ? TypedResults.BadRequest("Unable to Create Book Issue Request")
+            : TypedResults.Ok(bookIssued);
+    }
 }

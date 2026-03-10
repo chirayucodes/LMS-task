@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
+﻿namespace LibraryMinimalAPI.Persistence;
 
-namespace LibraryMinimalAPI.Persistence
+public sealed class Members
 {
-    public sealed class Members
-    {
-        public int ID { get; set; }
+    public int ID { get; set; }
 
-        public required string Name { get; set; }
-        public int MemberTypeID { get; set; }
+    public required string Name { get; set; }
+    public int MemberTypeID { get; set; }
 
-        public MemberType? MemberType { get; set; }
+    public MemberType? MemberType { get; set; }
 
-        public IList<BookIssueDetails> BookIssueDetails { get; set; } = [];
-
-    }
+    public IList<BookIssueDetails> BookIssueDetails { get; set; } = [];
 }

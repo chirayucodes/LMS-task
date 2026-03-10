@@ -1,126 +1,126 @@
-﻿using LibraryMinimalAPI.Core.Dtos;
+﻿using System.Collections.ObjectModel;
+using LibraryMinimalAPI.Core.Dtos;
 using LibraryMinimalAPI.Core.Requests;
 using LibraryMinimalAPI.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Collections.ObjectModel;
-using static System.Reflection.Metadata.BlobBuilder;
 
-namespace LibraryMinimalAPI.Services
+namespace LibraryMinimalAPI.Services;
+
+public sealed class BookService
 {
-    public sealed class BookService
+    private readonly AppDbContext _context;
+    private readonly ILogger<BookService> _logger;
+
+    public BookService(AppDbContext context, ILogger<BookService> logger)
     {
-        private readonly AppDbContext _context;
-        private readonly ILogger<BookService> _logger;
+        _context = context;
+        _logger = logger;
+    }
 
-        public BookService(AppDbContext context, ILogger<BookService> logger)
+
+    public IEnumerable<BookDTO> GetBooksList()
+    {
+        _logger.LogInformation("GetBooksList HIT");
+
+        IReadOnlyList<BookDTO> books = _context.BookDetails
+            //.Include(b => b.Categories)
+            .Select(b => new BookDTO(
+                b.ID,
+                b.BookTitle,
+                b.AuthorName,
+                b.PublisherName,
+                b.BookPrice,
+                b.Categories.BookCategory
+            ))
+            .ToList();
+
+        return books;
+    }
+
+    public IEnumerable<BookDTO> GetBookBySearch(string? keyword = null)
+    {
+        _logger.LogInformation("GetBookBySearch HIT");
+        IQueryable<BookDetails> query = _context.BookDetails.AsQueryable();
+        if (!string.IsNullOrEmpty(keyword))
         {
-            _context = context;
-            _logger = logger;
+            query = query.Where(b => b.BookTitle.Contains(keyword));
         }
 
+        IList<BookDTO> books = query
+            .Include(b => b.Categories)
+            .Select(b => new BookDTO(
+                b.ID,
+                b.BookTitle,
+                b.AuthorName,
+                b.PublisherName,
+                b.BookPrice,
+                b.Categories.BookCategory
+            )).ToArray();
+        return new ReadOnlyCollection<BookDTO>(books);
+    }
 
-        public IEnumerable<BookDTO> GetBooksList()
+    public BookDTO? GetBookByID(int id)
+    {
+        BookDetails? book = _context.BookDetails.FirstOrDefault(b => b.ID == id);
+        if (book is null)
         {
-            _logger.LogInformation("GetBooksList HIT");
-
-            IReadOnlyList<BookDTO> books = _context.BookDetails
-                //.Include(b => b.Categories)
-                .Select(b => new BookDTO(
-                    b.ID,
-                    b.BookTitle,
-                    b.AuthorName,
-                    b.PublisherName,
-                    b.BookPrice,
-                    b.Categories.BookCategory
-                ))
-                .ToList();
-
-            return books;
+            return null;
         }
-        public IEnumerable<BookDTO> GetBookBySearch(string? keyword = null)
+
+        return new BookDTO(
+            book.ID,
+            book.BookTitle,
+            book.AuthorName,
+            book.PublisherName,
+            book.BookPrice,
+            _context.Categories
+                .Where(c => c.ID == book.CategoryID)
+                .Select(c => c.BookCategory)
+                .FirstOrDefault() ?? string.Empty
+        );
+    }
+
+    public BookDTO? PostBookRequest(PostBookRequest request)
+    {
+        try
         {
-            _logger.LogInformation("GetBookBySearch HIT");
-            var query = _context.BookDetails.AsQueryable();
-            if (!string.IsNullOrEmpty(keyword))
+            BookDetails book = new()
             {
-                query = query.Where(b => b.BookTitle.Contains(keyword));
-            }
+                BookTitle = request.BookTitle,
+                AuthorName = request.AuthorName,
+                PublisherName = request.PublisherName,
+                BookPrice = request.BookPrice,
+                CategoryID = request.CategoryID
+            };
 
-            IList<BookDTO> books = query
-                .Include(b => b.Categories)
-                .Select(b => new BookDTO(
-                    b.ID,
-                    b.BookTitle,
-                    b.AuthorName,
-                    b.PublisherName,
-                    b.BookPrice,
-                    b.Categories.BookCategory
-                )).ToArray();
-            return new ReadOnlyCollection<BookDTO>(books);
-        }
+            _context.BookDetails.Add(book);
 
-        public BookDTO? GetBookByID(int id)
-        {
-            var book = _context.BookDetails.FirstOrDefault(b => b.ID == id);
-            if (book is null) return null;
+            _context.SaveChanges();
 
-            return new BookDTO(
+            BookDTO bookDto = new(
                 book.ID,
                 book.BookTitle,
                 book.AuthorName,
                 book.PublisherName,
                 book.BookPrice,
-                 _context.Categories
+                _context.Categories
                     .Where(c => c.ID == book.CategoryID)
                     .Select(c => c.BookCategory)
                     .FirstOrDefault() ?? string.Empty
-                );
+            );
+            return bookDto;
         }
-
-        public BookDTO? PostBookRequest(PostBookRequest request)
+        catch (DbUpdateException ex)
         {
-            try
-            {
-                var book = new BookDetails
-                {
-                    BookTitle = request.BookTitle,
-                    AuthorName = request.AuthorName,
-                    PublisherName = request.PublisherName,
-                    BookPrice = request.BookPrice,
-                    CategoryID = request.CategoryID
-                };
-
-                _context.BookDetails.Add(book);
-
-                _context.SaveChanges();
-
-                var bookDto = new BookDTO(
-                    book.ID,
-                    book.BookTitle,
-                    book.AuthorName,
-                    book.PublisherName,
-                    book.BookPrice,
-                     _context.Categories
-                    .Where(c => c.ID == book.CategoryID)
-                    .Select(c => c.BookCategory)
-                    .FirstOrDefault() ?? string.Empty
-
-                );
-                return bookDto;
-            }
-            catch (DbUpdateException ex)
-            {
-                _logger.LogError(ex,
-                    "Error while creating a Book.");
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Error while creating a Book with name {@BookTitle}.", request);
-            }
-
-            return null;
-
+            _logger.LogError(ex,
+                "Error while creating a Book.");
         }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error while creating a Book with name {@BookTitle}.", request);
+        }
+
+        return null;
     }
 }

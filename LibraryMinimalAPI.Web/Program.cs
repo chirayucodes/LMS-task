@@ -3,7 +3,7 @@ using LibraryMinimalAPI.Services;
 using LibraryMinimalAPI.Web.Endpoints;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -20,8 +20,7 @@ builder.Services
     .AddScoped<BookIssuedService>();
 
 
-
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -36,7 +35,7 @@ RouteGroupBuilder bookGroup = app.MapGroup("api");
 bookGroup.MapBookEndpoints()
     .MapCategoryEndpoints()
     .MapMemberEndpoints()
-    .MapBookIssuedEndpoints(); 
+    .MapBookIssuedEndpoints();
 
 app.MapGet("/", () => "Welcome to the Library API!");
 

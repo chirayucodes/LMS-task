@@ -1,10 +1,9 @@
-﻿namespace LibraryMinimalAPI.Persistence
-{
-    public sealed class Categories
-    {
-        public int ID { get; set; }
-        public required string BookCategory { get; set; }
+﻿namespace LibraryMinimalAPI.Persistence;
 
-        public IList<BookDetails> BookDetails { get; set; } = [];
-    }
+public sealed class Categories
+{
+    public int ID { get; set; }
+    public required string BookCategory { get; set; }
+
+    public IList<BookDetails> BookDetails { get; set; } = [];
 }

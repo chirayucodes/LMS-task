@@ -1,48 +1,46 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Emit;
-namespace LibraryMinimalAPI.Persistence.Configurations
+
+namespace LibraryMinimalAPI.Persistence.Configurations;
+
+public sealed class BookEntityConfiguration : IEntityTypeConfiguration<BookDetails>
 {
-    public sealed class BookEntityConfiguration : IEntityTypeConfiguration<BookDetails>
+    public void Configure(EntityTypeBuilder<BookDetails> builder)
     {
-        public void Configure(EntityTypeBuilder<BookDetails> builder)
-        {
-            builder.ToTable("BookDetails");
+        builder.ToTable("BookDetails");
 
-            builder.HasKey(b => b.ID);
+        builder.HasKey(b => b.ID);
 
-            builder
-                .Property(b => b.BookTitle)
-                .IsRequired()
-                .HasMaxLength(100);
+        builder
+            .Property(b => b.BookTitle)
+            .IsRequired()
+            .HasMaxLength(100);
 
-            builder
-                .Property(b => b.AuthorName)
-                .IsRequired()
-                .HasMaxLength(100);
+        builder
+            .Property(b => b.AuthorName)
+            .IsRequired()
+            .HasMaxLength(100);
 
-            builder
-                .Property(b => b.PublisherName)
-                .IsRequired()
-                .HasMaxLength(100);
-            builder
-                .Property(b => b.BookPrice)
-                .HasPrecision(6, 2)
-                .IsRequired();
+        builder
+            .Property(b => b.PublisherName)
+            .IsRequired()
+            .HasMaxLength(100);
+        builder
+            .Property(b => b.BookPrice)
+            .HasPrecision(6, 2)
+            .IsRequired();
 
 
-            //Relationship
+        //Relationship
 
-            builder.HasOne(b => b.Categories)
-                    .WithMany(c => c.BookDetails)
-                    .HasForeignKey(b => b.CategoryID)
-                    .HasPrincipalKey(c => c.ID)
-                    .OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(b => b.Categories)
+            .WithMany(c => c.BookDetails)
+            .HasForeignKey(b => b.CategoryID)
+            .HasPrincipalKey(c => c.ID)
+            .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(b => b.BookIssueDetails)
-                    .WithOne(b => b.BookDetails)
-                    .HasForeignKey(b => b.BookID);
-         
-        }
+        builder.HasMany(b => b.BookIssueDetails)
+            .WithOne(b => b.BookDetails)
+            .HasForeignKey(b => b.BookID);
     }
 }
