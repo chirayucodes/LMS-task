@@ -1,4 +1,4 @@
-﻿namespace LibraryMinimalAPI.Core.Dtos;
+namespace LibraryMinimalAPI.Core.Dtos;
 
 public sealed class BookIssuedDTO(
     int ID,
@@ -6,8 +6,7 @@ public sealed class BookIssuedDTO(
     string Name, // member name
     DateOnly IssueDate,
     DateOnly RenewDate,
-    DateOnly? ReturnDate,
-    decimal BookPrice
+    DateOnly? ReturnDate
 )
 {
     public int ID { get; } = ID;
@@ -16,5 +15,5 @@ public sealed class BookIssuedDTO(
     public DateOnly IssueDate { get; } = IssueDate;
     public DateOnly RenewDate { get; } = RenewDate;
     public DateOnly? ReturnDate { get; } = ReturnDate;
-    public decimal BookPrice { get; } = BookPrice;
+
 }

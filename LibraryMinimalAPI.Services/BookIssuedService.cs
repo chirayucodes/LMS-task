@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using LibraryMinimalAPI.Core.Dtos;
 using LibraryMinimalAPI.Core.Requests;
 using LibraryMinimalAPI.Persistence;
@@ -18,7 +18,7 @@ public sealed class BookIssuedService
         _logger = logger;
     }
 
-    public IEnumerable<BookIssuedDTO> GetBookIssued()
+    public IEnumerable<BookIssuedDTO> GetBookIssued() 
     {
         IReadOnlyList<BookIssuedDTO> BooksIssued = _DbContext.BookIssueDetails
             .Include(b => b.BookDetails)
@@ -30,8 +30,7 @@ public sealed class BookIssuedService
                 b.Members.Name,
                 b.IssueDate,
                 b.RenewDate,
-                b.ReturnDate,
-                b.BookPrice
+                b.ReturnDate
             ))
             .ToList();
 
@@ -57,8 +56,7 @@ public sealed class BookIssuedService
                 b.Members.Name,
                 b.IssueDate,
                 b.RenewDate,
-                b.ReturnDate,
-                b.BookPrice
+                b.ReturnDate
             )).ToList();
 
         return new ReadOnlyCollection<BookIssuedDTO>(result);
@@ -74,8 +72,7 @@ public sealed class BookIssuedService
                 b.Members.Name,
                 b.IssueDate,
                 b.RenewDate,
-                b.ReturnDate,
-                b.BookPrice
+                b.ReturnDate
             ))
             .FirstOrDefault();
 
@@ -92,8 +89,7 @@ public sealed class BookIssuedService
                 MemberID = request.MemberID,
                 IssueDate = request.IssueDate,
                 RenewDate = request.RenewDate,
-                ReturnDate = request.ReturnDate,
-                BookPrice = request.BookPrice
+                ReturnDate = request.ReturnDate
             };
 
             if (bookIssueDetails == null)
@@ -126,8 +122,7 @@ public sealed class BookIssuedService
                     .FirstOrDefault() ?? string.Empty,
                 bookIssueDetails.IssueDate,
                 bookIssueDetails.RenewDate,
-                bookIssueDetails.ReturnDate,
-                bookIssueDetails.BookPrice
+                bookIssueDetails.ReturnDate
             );
             return CreatedIssuedBook;
         }

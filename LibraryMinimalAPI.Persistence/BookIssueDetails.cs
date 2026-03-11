@@ -1,4 +1,4 @@
-﻿namespace LibraryMinimalAPI.Persistence;
+namespace LibraryMinimalAPI.Persistence;
 
 public sealed class BookIssueDetails
 {
@@ -11,7 +11,6 @@ public sealed class BookIssueDetails
     public DateOnly? ReturnDate { get; set; }
 
     public DateOnly RenewDate { get; set; }
-    public required decimal BookPrice { get; set; }
 
 
     public BookDetails BookDetails { get; set; }

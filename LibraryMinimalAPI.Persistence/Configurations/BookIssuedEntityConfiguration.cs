@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LibraryMinimalAPI.Persistence.Configurations;
@@ -9,9 +9,6 @@ public sealed class BookIssuedEntityConfiguration : IEntityTypeConfiguration<Boo
     {
         builder.HasKey(b => b.ID);
 
-        builder.Property(b => b.BookPrice)
-            .HasColumnType("decimal(6,2)")
-            .IsRequired();
 
         builder.Property(b => b.IssueDate)
             .HasDefaultValueSql("GETDATE()");
