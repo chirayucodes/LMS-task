@@ -123,4 +123,49 @@ public sealed class BookService
 
         return null;
     }
+
+    public BookDTO? DeleteBook(int ID)
+    {
+        try
+        {
+            BookDetails? book = _context.BookDetails.FirstOrDefault(b => b.ID == ID);
+
+            if (book is null)
+            {
+                throw new ConflictException($"Cannot find this Id {ID}");
+            }
+
+            _context.BookDetails.Remove(book);
+
+            _context.SaveChanges();
+
+            return new BookDTO(
+                book.ID,
+                book.BookTitle,
+                book.AuthorName,
+                book.PublisherName,
+                book.BookPrice,
+                _context.Categories
+                    .Where(c => c.ID == book.CategoryID)
+                    .Select(c => c.BookCategory)
+                    .FirstOrDefault() ?? string.Empty
+            );
+        }
+        catch (ConflictException ex)
+        {
+            _logger.LogError(ex, "Error while creating a state with BookId {Id}. Some conflicts occured.",
+                ID);
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex,
+                "Error while Deleting a Book.");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error while Deleting a Book with name {@BookName}.", ID);
+        }
+
+        return null;
+    }
 }
