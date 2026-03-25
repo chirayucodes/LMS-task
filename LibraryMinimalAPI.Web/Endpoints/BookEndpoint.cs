@@ -15,7 +15,7 @@ public static class BookEndpoint
         endpoints.MapGet("/books/search", GetBookBySearch); // search
         endpoints.MapGet("/books/{ID:int}", GetBookByID);
         endpoints.MapPost("/books", PostBookRequest);
-        endpoints.MapDelete("{ID:int}", Delete);
+        endpoints.MapDelete("/books/{ID:int}", Delete);
 
         return endpoints;
     }
@@ -32,7 +32,7 @@ public static class BookEndpoint
         IEnumerable<BookDTO> books = bookService.GetBookBySearch(keyword);
         return TypedResults.Ok(books);
     }
-
+        
     private static IResult GetBookByID(BookService bookService, int ID)
     {
         BookDTO? book = bookService.GetBookByID(ID);
@@ -57,6 +57,7 @@ public static class BookEndpoint
 
         return result is null
             ? TypedResults.Problem("There was some problem. See log for more details.")
-            : TypedResults.Ok(result);
+            : TypedResults.Ok(result + "Deleted Succesfully");
+
     }
 }

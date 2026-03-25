@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using LibraryMinimalAPI.Core.Dtos;
 using LibraryMinimalAPI.Core.Requests;
@@ -28,7 +28,8 @@ public sealed class MemberService
                 m.ID,
                 m.Name,
                 m.MemberTypeID,
-                m.MemberType.TypeName
+                m.MemberType.TypeName,
+                m.MemberType.MaxBooks
             )).ToArray();
 
         return new ReadOnlyCollection<MembersDTO>(members);
@@ -54,7 +55,11 @@ public sealed class MemberService
                 _dbContext.MemberType
                     .Where(u => u.ID == member.ID)
                     .Select(u => u.TypeName)
-                    .FirstOrDefault() ?? string.Empty
+                    .FirstOrDefault() ?? string.Empty,
+                _dbContext.MemberType
+                    .Where(u => u.ID == member.ID)
+                    .Select(u => u.MaxBooks)
+                    .FirstOrDefault()
             )).ToImmutableList();
 
         return new MemberTypeDTO(member.ID, member.TypeName, member.MaxBooks, members);
@@ -76,7 +81,11 @@ public sealed class MemberService
                 _dbContext.MemberType
                     .Where(u => u.ID == member.MemberTypeID)
                     .Select(u => u.TypeName)
-                    .FirstOrDefault() ?? string.Empty
+                    .FirstOrDefault() ?? string.Empty,
+                _dbContext.MemberType
+                    .Where(u => u.ID == member.MemberTypeID)
+                    .Select(u => u.MaxBooks)
+                    .FirstOrDefault()
             );
 
             return result;
@@ -93,4 +102,52 @@ public sealed class MemberService
 
         return null;
     }
+
+    public MembersDTO? UpdateMember(int Id, PostMemberRequest request)
+    {
+        try
+        {
+            //Members? member = _dbContext.Members.Include(m => m.MemberType)
+            //    .FirstOrDefault(m => m.ID == Id); 
+            Members? member = _dbContext.Members.Find(Id);
+            if (member == null)
+            {
+                _logger.LogWarning("member with ID {Id} not found for update.", Id);
+                return null;
+            }
+
+            member.Name = request.Name;
+            member.MemberTypeID = request.MemberTypeID;
+
+            _dbContext.SaveChanges();
+
+            MembersDTO result = new(
+                member.ID,
+                member.Name,
+                  member.MemberTypeID,
+                  _dbContext.MemberType
+                    .Where(u => u.ID == member.MemberTypeID)
+                    .Select(u => u.TypeName)
+                    .FirstOrDefault() ?? string.Empty,
+                _dbContext.MemberType
+                    .Where(u => u.ID == member.MemberTypeID)
+                    .Select(u => u.MaxBooks)
+                    .FirstOrDefault()
+                );
+
+            return result;
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex,
+                "Error while updating a member with ID {Id}.", Id);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error while updating a member with ID {Id} and name {@Name}.", Id, request);
+        }
+
+        return null;
+    }
+
 }

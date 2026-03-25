@@ -1,4 +1,4 @@
-﻿using LibraryMinimalAPI.Core.Dtos;
+using LibraryMinimalAPI.Core.Dtos;
 using LibraryMinimalAPI.Core.Requests;
 using LibraryMinimalAPI.Services;
 
@@ -21,6 +21,7 @@ public static class MemberEndpoint
         MemberGroup.MapGet("", GetMembers);
         MemberGroup.MapGet("{id:int}", GetMemberTypes);
         MemberGroup.MapPost("", CreateMember);
+        MemberGroup.MapPut("{id:int}", Update);
 
         return endpoints;
     }
@@ -41,6 +42,14 @@ public static class MemberEndpoint
     private static IResult CreateMember(MemberService memberService, PostMemberRequest request)
     {
         MembersDTO? result = memberService.CreateMember(request);
+        return result is null
+            ? TypedResults.Problem("There was some problem. See log for more details.")
+            : TypedResults.Ok(result);
+    }
+
+    private static IResult Update(MemberService memberService, int ID, PostMemberRequest request)
+    {
+        MembersDTO? result = memberService.UpdateMember(ID, request);
         return result is null
             ? TypedResults.Problem("There was some problem. See log for more details.")
             : TypedResults.Ok(result);

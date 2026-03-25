@@ -1,4 +1,4 @@
-﻿namespace LibraryMinimalAPI.Core.Requests;
+namespace LibraryMinimalAPI.Core.Requests;
 
 public sealed class PostMemberRequest
 {
