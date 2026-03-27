@@ -15,7 +15,6 @@ public static class BookEndpoint
         endpoints.MapGet("/books/search", GetBookBySearch); // search
         endpoints.MapGet("/books/{ID:int}", GetBookByID);
         endpoints.MapPost("/books", PostBookRequest);
-        endpoints.MapDelete("/books/{ID:int}", Delete);
 
         return endpoints;
     }

@@ -150,4 +150,46 @@ public sealed class MemberService
         return null;
     }
 
+    public MembersDTO? DeleteMember(int ID)
+    {
+        try
+        {
+            Members? member = _dbContext.Members.Find(ID);
+            if (member == null)
+            {
+                _logger.LogWarning("Member with ID {ID} not found for deletion.", ID);
+                return null;
+            }
+
+            _dbContext.Members.Remove(member);
+            _dbContext.SaveChanges();
+            MembersDTO result = new(
+                member.ID,
+                member.Name,
+                member.MemberTypeID,
+                _dbContext.MemberType
+                    .Where(u => u.ID == member.MemberTypeID)
+                    .Select(u => u.TypeName)
+                    .FirstOrDefault() ?? string.Empty,
+                _dbContext.MemberType
+                    .Where(u => u.ID == member.MemberTypeID)
+                    .Select(u => u.MaxBooks)
+                    .FirstOrDefault()
+                );
+            return result;
+
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex,
+                "Error while deleting a member with ID {ID}.", ID);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error while deleting a member with ID {ID}.", ID);
+
+        }
+
+        return null;
+    }
 }

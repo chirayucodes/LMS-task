@@ -22,6 +22,7 @@ public static class MemberEndpoint
         MemberGroup.MapGet("{id:int}", GetMemberTypes);
         MemberGroup.MapPost("", CreateMember);
         MemberGroup.MapPut("{id:int}", Update);
+        MemberGroup.MapDelete("{id:int}", Delete);
 
         return endpoints;
     }
@@ -54,4 +55,14 @@ public static class MemberEndpoint
             ? TypedResults.Problem("There was some problem. See log for more details.")
             : TypedResults.Ok(result);
     }
+
+    private static IResult Delete(MemberService memberService, int ID)
+    {
+        MembersDTO? result = memberService.DeleteMember(ID);
+        return result is null
+            ? TypedResults.Problem("There was some problem. See log for more details.")
+            : TypedResults.Ok(result);
+    }
+
 }
+
