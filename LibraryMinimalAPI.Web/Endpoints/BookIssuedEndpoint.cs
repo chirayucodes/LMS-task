@@ -1,4 +1,4 @@
-﻿using LibraryMinimalAPI.Core.Dtos;
+using LibraryMinimalAPI.Core.Dtos;
 using LibraryMinimalAPI.Core.Requests;
 using LibraryMinimalAPI.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -54,4 +54,5 @@ public static class BookIssuedEndpoint
             ? TypedResults.BadRequest("Unable to Create Book Issue Request")
             : TypedResults.Ok(bookIssued);
     }
+
 }

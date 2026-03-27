@@ -19,10 +19,11 @@ public static class MemberEndpoint
         IEndpointRouteBuilder MemberGroup = endpoints.MapMemberGroup();
 
         MemberGroup.MapGet("", GetMembers);
-        MemberGroup.MapGet("{id:int}", GetMemberTypes);
+        //MemberGroup.MapGet("{id:int}", GetMemberTypes);
         MemberGroup.MapPost("", CreateMember);
         MemberGroup.MapPut("{id:int}", Update);
         MemberGroup.MapDelete("{id:int}", Delete);
+        MemberGroup.MapGet("{id:int}", GetMemberById);
 
         return endpoints;
     }
@@ -37,6 +38,12 @@ public static class MemberEndpoint
     private static IResult GetMemberTypes(MemberService memberService, int id)
     {
         MemberTypeDTO? member = memberService.GetMemberType(id);
+        return member is null ? TypedResults.NotFound() : TypedResults.Ok(member);
+    }
+
+    private static IResult GetMemberById(MemberService memberService, int id)
+    {
+        var member = memberService.GetMemberById(id);
         return member is null ? TypedResults.NotFound() : TypedResults.Ok(member);
     }
 

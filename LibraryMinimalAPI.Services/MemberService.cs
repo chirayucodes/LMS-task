@@ -150,6 +150,28 @@ public sealed class MemberService
         return null;
     }
 
+    public MembersDTO? GetMemberById(int id)
+    {
+        var member = _dbContext.Members
+            .Where(m => m.ID == id)
+            .Select(m => new MembersDTO(
+                m.ID,
+                m.Name,
+                m.MemberTypeID,
+                _dbContext.MemberType
+                    .Where(mt => mt.ID == m.MemberTypeID)
+                    .Select(mt => mt.TypeName)
+                    .FirstOrDefault() ?? string.Empty,
+                _dbContext.MemberType
+                    .Where(mt => mt.ID == m.MemberTypeID)
+                    .Select(mt => mt.MaxBooks)
+                    .FirstOrDefault()
+            ))
+            .FirstOrDefault();
+
+        return member;
+    }
+
     public MembersDTO? DeleteMember(int ID)
     {
         try
